@@ -1,4 +1,5 @@
 #!/bin/bash
+DIR="$(dirname $(readlink -f $0))"
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 NC='\033[0m' # No Color
@@ -7,7 +8,7 @@ OK="${GREEN}✔${NC}"
 ## Config file, which defines:
 # - REMOTE_NFS_IP
 # - REMOTE_NFS_MAC
-. config
+. ${DIR}/config
 DEV="$(ip route get ${REMOTE_NFS_IP} |grep dev |awk -F'dev ' '{print $2}' |awk '{print $1}')"
 
 function clear_line {
