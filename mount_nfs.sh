@@ -36,7 +36,8 @@ function wait_server_alive {
 }
 
 function mount_remote_nfs {
-	mount $LOCAL_MOUNTPOINT
+	echo -en "Mounting $LOCAL_MOUNTPOINT...\t\t"
+	mount $LOCAL_MOUNTPOINT && echo -e $OK || echo -e $NOK
 }
 
 wol
