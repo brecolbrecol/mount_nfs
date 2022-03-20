@@ -16,7 +16,7 @@ function clear_line {
 
 function wol {
 	echo -en "Sending magic packet...\t\t"
-	sudo etherwake -D -b -i ${DEV} ${REMOTE_NFS_MAC} > /dev/null 2>&1 && echo $OK || echo $NOK
+	sudo etherwake -D -b -i ${DEV} ${REMOTE_NFS_MAC} > /dev/null 2>&1 && echo -e $OK || echo -e $NOK
 }
 
 function is_server_alive {
