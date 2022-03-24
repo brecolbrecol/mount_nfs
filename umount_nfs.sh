@@ -34,7 +34,7 @@ function wait_server_down {
 
 function umount_remote_nfs {
 	echo -en "Unmounting $LOCAL_MOUNTPOINT...\t\t"
-	umount $LOCAL_MOUNTPOINT && echo -e $OK || echo -e $NOK
+	umount $LOCAL_MOUNTPOINT >/dev/null 2>&1 && echo -e $OK || echo -e $NOK
 }
 
 umount_remote_nfs
