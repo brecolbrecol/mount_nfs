@@ -5,11 +5,12 @@ GREEN='\033[0;32m'
 NC='\033[0m' # No Color
 NOK="${RED}✖${NC}"
 OK="${GREEN}✔${NC}"
+DEV="$(ip route get ${REMOTE_NFS_IP} |grep dev |awk -F'dev ' '{print $2}' |awk '{print $1}')"
 ## Config file, which defines:
 # - REMOTE_NFS_IP
 # - REMOTE_NFS_MAC
+# - LOCAL_MOUNTPOINT
 . ${DIR}/config
-DEV="$(ip route get ${REMOTE_NFS_IP} |grep dev |awk -F'dev ' '{print $2}' |awk '{print $1}')"
 
 function clear_line {
 	echo -en "\r                                                                    "
@@ -37,6 +38,7 @@ function wait_server_alive {
 }
 
 function mount_remote_nfs {
+	mkdir -p $LOCAL_MOUNTPOINT > /dev/null 2>&1 # ensure local mountpoint exists
 	echo -en "Mounting $LOCAL_MOUNTPOINT...\t\t"
 	mount $LOCAL_MOUNTPOINT && echo -e $OK || echo -e $NOK
 }
