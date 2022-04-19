@@ -70,8 +70,35 @@ function mount_remote_nfs {
 	mount ${LOCAL_MOUNTPOINT} && echo -e "${OK}" || echo -e "${NOK}"
 }
 
+
+function wait_server_down {
+	ssh ${REMOTE_NFS_IP} sudo poweroff > /dev/null 2>&1
+	echo -en "Waiting for $REMOTE_NFS_IP...\t"
+	while is_server_alive $REMOTE_NFS_IP
+	do
+		echo -en $NOK
+		sleep 1
+		clear_line
+		echo -en "\rWaiting for ${REMOTE_NFS_IP}...\t"
+	done
+	echo -e $OK
+}
+
+function umount_remote_nfs {
+	echo -en "Unmounting $LOCAL_MOUNTPOINT...\t\t"
+	umount $LOCAL_MOUNTPOINT >/dev/null 2>&1 && echo -e $OK || echo -e $NOK
+}
+
 load_config || exit
-wol
-wait_server_alive
-mount_remote_nfs
+
+if [[ -z ${1} || "${1}" == "mount" ]]
+then
+	wol
+	wait_server_alive
+	mount_remote_nfs
+elif [[ "${1}" == "umount" ]]
+then
+	umount_remote_nfs
+	wait_server_down
+fi
 
