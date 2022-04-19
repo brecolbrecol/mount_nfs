@@ -33,6 +33,16 @@ function load_config {
 		return 2
 	fi
 
+	if [[ -z ${REMOTE_MOUNTPOINT} ]]
+	then
+		REMOTE_MOUNTPOINT="${LOCAL_MOUNTPOINT}"
+	fi
+
+	if [[ -z ${REMOTE_USER} ]]
+	then
+		REMOTE_USER="$(whoami)"
+	fi
+
 	DEV="$(ip route get ${REMOTE_NFS_IP} |grep dev |awk -F'dev ' '{print $2}' |awk '{print $1}')"
 
 	return 0
@@ -67,26 +77,26 @@ function wait_server_alive {
 function mount_remote_nfs {
 	mkdir -p "${LOCAL_MOUNTPOINT}" > /dev/null 2>&1 # ensure local mountpoint exists
 	echo -en "Mounting ${LOCAL_MOUNTPOINT}...\t\t"
-	mount ${LOCAL_MOUNTPOINT} && echo -e "${OK}" || echo -e "${NOK}"
+	sudo mount -t nfs ${REMOTE_NFS_IP}:${REMOTE_MOUNTPOINT} ${LOCAL_MOUNTPOINT} && echo -e "${OK}" || echo -e "${NOK}"
 }
 
 
 function wait_server_down {
-	ssh ${REMOTE_NFS_IP} sudo poweroff > /dev/null 2>&1
-	echo -en "Waiting for $REMOTE_NFS_IP...\t"
-	while is_server_alive $REMOTE_NFS_IP
+	ssh ${REMOTE_USER}@${REMOTE_NFS_IP} sudo poweroff > /dev/null 2>&1
+	echo -en "Waiting for ${REMOTE_NFS_IP}...\t"
+	while is_server_alive ${REMOTE_NFS_IP}
 	do
-		echo -en $NOK
+		echo -en ${NOK}
 		sleep 1
 		clear_line
 		echo -en "\rWaiting for ${REMOTE_NFS_IP}...\t"
 	done
-	echo -e $OK
+	echo -e ${OK}
 }
 
 function umount_remote_nfs {
-	echo -en "Unmounting $LOCAL_MOUNTPOINT...\t\t"
-	umount $LOCAL_MOUNTPOINT >/dev/null 2>&1 && echo -e $OK || echo -e $NOK
+	echo -en "Unmounting ${LOCAL_MOUNTPOINT}...\t\t"
+	sudo umount ${LOCAL_MOUNTPOINT} >/dev/null 2>&1 && echo -e $OK || echo -e $NOK
 }
 
 load_config || exit

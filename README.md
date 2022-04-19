@@ -12,5 +12,6 @@ apt-get install etherwake
 1. Launch script: `./wam_nas.sh`
 
 *¹* alternately, you can also define environment variable `WAM_CONFIG`, i.e: `WAM_CONFIG=file_name ./wam_nash.sh`
+
 ## Security notes
-Script launchs `etherwake` with sudo
+Script launchs `etherwake`, `mount` and `umount` with sudo; you can (and definetly may want to) tune it.
