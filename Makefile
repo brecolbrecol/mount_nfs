@@ -1,2 +1,2 @@
 install:
-	sudo ln -s $(readlink -f mount_nfs.sh) /usr/bin/mount_nfs.sh
+	sudo ln -s $(readlink -f wam_naw.sh) /usr/bin/wam_nas.sh
