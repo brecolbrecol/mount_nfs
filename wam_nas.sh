@@ -101,7 +101,11 @@ function umount_remote_nfs {
 
 load_config || exit
 
-if [[ -z ${1} || "${1}" == "mount" ]]
+if [[ -z ${1} || "${1}" == "status" ]]
+then
+	mount |grep ${LOCAL_MOUNTPOINT} > /dev/null && status="${GREEN}" || status="${RED}not "
+	echo -e "${LOCAL_MOUNTPOINT} is ${status}mounted${NC}"
+elif [[ "${1}" == "mount" ]]
 then
 	wol
 	wait_server_alive
@@ -110,5 +114,8 @@ elif [[ "${1}" == "umount" ]]
 then
 	umount_remote_nfs
 	wait_server_down
+elif [[ "${1}" == "help" || "${1}" == "--help" ]]
+then
+	echo "Use: $0 [mount|umount|status|help]"
 fi
 
