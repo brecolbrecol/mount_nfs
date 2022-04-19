@@ -1,4 +1,4 @@
-# mount_nfs
+# Wake And Mount NAS
 Script for WOL and mounting remote NFS server
 
 ## Requirements
@@ -6,4 +6,11 @@ Script for WOL and mounting remote NFS server
 apt-get install etherwake
 ```
 
-Security note: script launchs `etherwake` with sudo
+## Use
+
+1. Define your user-case variables inside ./config file *¹*
+1. Launch script: `./wam_nas.sh`
+
+*¹* alternately, you can also define environment variable `WAM_CONFIG`, i.e: `WAM_CONFIG=file_name ./wam_nash.sh`
+## Security notes
+Script launchs `etherwake` with sudo

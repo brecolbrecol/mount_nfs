@@ -15,9 +15,9 @@ OK="${GREEN}✔${NC}"
 
 
 function load_config {
-	if [[ ! -z $1 ]]
+	if [[ ! -z $WAM_CONFIG ]]
 	then
-		. $1	
+		. $WAM_CONFIG	
 	elif [[ -e "${DIR}/config" ]]
 	then
 		. "${DIR}/config"
@@ -70,7 +70,7 @@ function mount_remote_nfs {
 	mount ${LOCAL_MOUNTPOINT} && echo -e "${OK}" || echo -e "${NOK}"
 }
 
-load_config ${1} || exit
+load_config || exit
 wol
 wait_server_alive
 mount_remote_nfs
