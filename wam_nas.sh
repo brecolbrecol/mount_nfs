@@ -82,7 +82,9 @@ function mount_remote_nfs {
 
 
 function wait_server_down {
-	ssh ${REMOTE_USER}@${REMOTE_NFS_IP} sudo poweroff > /dev/null 2>&1
+	is_server_alive "${REMOTE_NFS_IP}" && {
+		ssh ${REMOTE_USER}@${REMOTE_NFS_IP} sudo poweroff > /dev/null 2>&1
+	}
 	echo -en "Waiting for ${REMOTE_NFS_IP}...\t"
 	while is_server_alive ${REMOTE_NFS_IP}
 	do
