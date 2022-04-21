@@ -87,7 +87,6 @@ function wait_server_down {
 	while is_server_alive ${REMOTE_NFS_IP}
 	do
 		echo -en ${NOK}
-		sleep 1
 		clear_line
 		echo -en "\rWaiting for ${REMOTE_NFS_IP}...\t"
 	done
